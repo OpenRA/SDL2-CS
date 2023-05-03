@@ -16,7 +16,7 @@
     - Copyright (c) the SDL developers and contributors
     </copyright>
     <license type="expression">Zlib</license>
-    <tags>OpenRA</tags>
+    <tags>OpenRA natives SDL</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0" />
     </dependencies>

@@ -85,7 +85,7 @@ jobs:
             - name: Upload NuGet package to Artifacts
               uses: actions/upload-artifact@v3
               with:
-                name: NuGet Package v.${{ github.event.inputs.nugetPackageVersion }}
+                name: NuGet Package ${{ github.event.inputs.nugetPackageVersion }}
                 path: ./nuget
 
             - name: Tag a release

@@ -1,9 +1,9 @@
-name: Build native dependencies
+name: Build native dependencies (SDL2)
 
 # Change SDL2 version based on https://github.com/libsdl-org/SDL/releases, but remember to check what SDL2 version SDL2-CS targets.
 # Change Chromium revision numbers based on https://chromium.woolyss.com/download/.
 env:
-    SDL2_VERSION: 2.0.22
+    SDL2_VERSION: 2.0.22 # Make sure this matches the version mentioned in the description in the .nuspec file.
     CHROMIUM_BUILD_x86: 1136315
     CHROMIUM_BUILD_x64: 1136314
 
@@ -73,8 +73,8 @@ jobs:
                 name: Natives-MacOS
                 path: ./artifacts
 
-    # Note: Running inside a CentOS container because we want to compile using a version of glibc that is as old as reasonably possible
-    # to ensure backwards compatibility of the compiled binaries.
+    # Note: Running inside a RockyLinux container because we want to compile using a version of glibc
+    # that is as old as reasonably possible to ensure backwards compatibility of the compiled binaries.
     linux-x64:
         name: Linux (x64)
         runs-on: ubuntu-22.04
