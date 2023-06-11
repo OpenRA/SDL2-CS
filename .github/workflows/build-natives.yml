@@ -96,7 +96,7 @@ jobs:
                 curl -s -L -O https://www.libsdl.org/release/SDL2-${SDL2_VERSION}.tar.gz
                 tar xf SDL2-${SDL2_VERSION}.tar.gz
                 cd SDL2-${SDL2_VERSION}
-                ./configure --disable-rpath --disable-loadso --disable-audio --disable-sensor --enable-x11-shared --enable-video-wayland --enable-wayland-shared --disable-video-directfb --disable-video-vulkan --disable-video-dummy --disable-power --disable-joystick --disable-haptic --disable-filesystem --disable-file --disable-cpuinfo --prefix "${PWD}"
+                ./configure --disable-rpath --enable-loadso --disable-audio --disable-sensor --enable-x11-shared --enable-video-wayland --enable-wayland-shared --disable-video-directfb --disable-video-vulkan --disable-video-dummy --disable-power --disable-joystick --disable-haptic --disable-filesystem --disable-file --disable-cpuinfo --prefix "${PWD}"
                 make
                 make install
                 cp lib/libSDL2.so ../artifacts/x64/SDL2.so
@@ -132,7 +132,7 @@ jobs:
                   curl -s -L -O https://www.libsdl.org/release/SDL2-${SDL2_VERSION}.tar.gz
                   tar xf SDL2-${SDL2_VERSION}.tar.gz
                   cd SDL2-${SDL2_VERSION}
-                  ./configure --disable-rpath --disable-loadso --disable-audio --disable-sensor --enable-x11-shared --enable-video-wayland --enable-wayland-shared --disable-video-directfb --disable-video-vulkan --disable-video-dummy --disable-power --disable-joystick --disable-haptic --disable-filesystem --disable-file --disable-cpuinfo --prefix "${PWD}"
+                  ./configure --disable-rpath --enable-loadso --disable-audio --disable-sensor --enable-x11-shared --enable-video-wayland --enable-wayland-shared --disable-video-directfb --disable-video-vulkan --disable-video-dummy --disable-power --disable-joystick --disable-haptic --disable-filesystem --disable-file --disable-cpuinfo --prefix "${PWD}"
                   make
                   make install
                   cp lib/libSDL2.so /artifacts/arm64/SDL2.so
