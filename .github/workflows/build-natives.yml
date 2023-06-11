@@ -127,7 +127,7 @@ jobs:
                   SDL2_VERSION: ${{ env.SDL2_VERSION }}
                 install: |
                   apt-get update -q -y
-                  apt-get install -y build-essential curl libxext-dev libx11-dev libwayland-dev libgl1-mesa-dev libglu1-mesa-dev libxrender-dev libxrandr-dev libxcursor-dev libxinerama-dev libxi-dev
+                  apt-get install -y build-essential curl libxext-dev libx11-dev libwayland-dev libgl1-mesa-dev libglu1-mesa-dev libxrender-dev libxrandr-dev libxcursor-dev libxinerama-dev libxi-dev libxkbcommon-dev
                 run: |
                   curl -s -L -O https://www.libsdl.org/release/SDL2-${SDL2_VERSION}.tar.gz
                   tar xf SDL2-${SDL2_VERSION}.tar.gz
