@@ -3,7 +3,7 @@
 
 # Source Lists
 SRC = \
-	src/SDL2.cs
+	src/SDL2.cs 
 
 # Targets
 
