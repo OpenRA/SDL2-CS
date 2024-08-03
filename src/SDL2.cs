@@ -1,7 +1,7 @@
 #region License
 /* SDL2# - C# Wrapper for SDL2
  *
- * Copyright (c) 2013-2021 Ethan Lee.
+ * Copyright (c) 2013-2024 Ethan Lee.
  *
  * This software is provided 'as-is', without any express or implied warranty.
  * In no event will the authors be held liable for any damages arising from
@@ -1913,6 +1913,14 @@ namespace SDL2
 			out int h
 		);
 
+		/* window refers to an SDL_Window* */
+		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+		public static extern void SDL_GetWindowSizeInPixels(
+			IntPtr window,
+			out int w,
+			out int h
+		);
+
 		/* IntPtr refers to an SDL_Surface*, window to an SDL_Window* */
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr SDL_GetWindowSurface(IntPtr window);
@@ -3067,7 +3075,7 @@ namespace SDL2
 
 		/* renderer refers to an SDL_Renderer*, texture to an SDL_Texture* */
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int SDL_RenderCopyEx(
+		public static extern int SDL_RenderCopyExF(
 			IntPtr renderer,
 			IntPtr texture,
 			ref SDL_Rect srcrect,
@@ -3083,7 +3091,7 @@ namespace SDL2
 		 * This overload allows for IntPtr.Zero (null) to be passed for srcrect.
 		 */
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int SDL_RenderCopyEx(
+		public static extern int SDL_RenderCopyExF(
 			IntPtr renderer,
 			IntPtr texture,
 			IntPtr srcrect,
@@ -8928,8 +8936,8 @@ namespace SDL2
 		[StructLayout(LayoutKind.Sequential)]
 		public struct SDL_Locale
 		{
-			IntPtr language;
-			IntPtr country;
+			public IntPtr language; /* char* */
+			public IntPtr country; /* char* */
 		}
 
 		/* IntPtr refers to an SDL_Locale*.
