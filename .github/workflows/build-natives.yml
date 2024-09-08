@@ -107,35 +107,26 @@ jobs:
                 name: Natives-Linux(x64)
                 path: ./artifacts
 
-    # Note: Using the run-on-arch action is *very* slow, but is the only way to simulate arm64 architecture.
     linux-arm64:
         name: Linux (arm64)
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-22.04-arm
         steps:
-            - name: Setup dependencies and compile natives
-              uses: uraimo/run-on-arch-action@v2
-              with:
-                arch: aarch64
-                distro: ubuntu22.04
-                shell: /bin/sh
-                githubToken: ${{ github.token }}
-                setup: |
-                  mkdir -p "${PWD}/artifacts/arm64"
-                dockerRunArgs: |
-                  --volume "${PWD}/artifacts:/artifacts"
-                env: |
-                  SDL2_VERSION: ${{ env.SDL2_VERSION }}
-                install: |
-                  apt-get update -q -y
-                  apt-get install -y build-essential pkgconf curl libxext-dev libx11-dev libwayland-dev libgl1-mesa-dev libglu1-mesa-dev libxrender-dev libxrandr-dev libxcursor-dev libxinerama-dev libxi-dev libxkbcommon-dev
-                run: |
-                  curl -s -L -O https://www.libsdl.org/release/SDL2-${SDL2_VERSION}.tar.gz
-                  tar xf SDL2-${SDL2_VERSION}.tar.gz
-                  cd SDL2-${SDL2_VERSION}
-                  ./configure --disable-rpath --enable-loadso --disable-audio --disable-sensor --enable-x11-shared --enable-video-wayland --enable-wayland-shared --disable-video-directfb --disable-video-vulkan --disable-video-dummy --disable-power --disable-joystick --disable-haptic --disable-filesystem --disable-file --disable-cpuinfo --prefix "${PWD}"
-                  make
-                  make install
-                  cp lib/libSDL2.so /artifacts/arm64/SDL2.so
+            - name: Setup dependencies
+              run: |
+                apt-get update -q -y
+                apt-get install -y build-essential pkgconf curl libxext-dev libx11-dev libwayland-dev libgl1-mesa-dev libglu1-mesa-dev libxrender-dev libxrandr-dev libxcursor-dev libxinerama-dev libxi-dev libxkbcommon-dev
+
+            - name: Compile natives
+              env: |
+                SDL2_VERSION: ${{ env.SDL2_VERSION }}
+              run: |
+                curl -s -L -O https://www.libsdl.org/release/SDL2-${SDL2_VERSION}.tar.gz
+                tar xf SDL2-${SDL2_VERSION}.tar.gz
+                cd SDL2-${SDL2_VERSION}
+                ./configure --disable-rpath --enable-loadso --disable-audio --disable-sensor --enable-x11-shared --enable-video-wayland --enable-wayland-shared --disable-video-directfb --disable-video-vulkan --disable-video-dummy --disable-power --disable-joystick --disable-haptic --disable-filesystem --disable-file --disable-cpuinfo --prefix "${PWD}"
+                make
+                make install
+                cp lib/libSDL2.so /artifacts/arm64/SDL2.so
 
             - name: Upload Artifacts
               uses: actions/upload-artifact@v3
