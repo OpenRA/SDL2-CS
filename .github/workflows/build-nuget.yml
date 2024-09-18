@@ -83,7 +83,7 @@ jobs:
                 nuget pack OpenRA-SDL2-CS.nuspec -OutputDirectory ./nuget -version ${{ env.PACKAGE_VERSION }}
 
             - name: Upload NuGet package to Artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: NuGet Package ${{ env.PACKAGE_VERSION }}
                 path: ./nuget
