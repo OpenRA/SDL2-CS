@@ -41,7 +41,7 @@ jobs:
                 unzip -j chrome-win.zip chrome-win/libGLESv2.dll -d artifacts/x64
 
             - name: Upload Artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: Natives-Windows
                 path: ./artifacts
@@ -68,7 +68,7 @@ jobs:
                 lipo -thin arm64 lib/libSDL2-2.0.0.dylib -output ../../artifacts/arm64/SDL2.dylib
 
             - name: Upload Artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: Natives-MacOS
                 path: ./artifacts
@@ -102,7 +102,7 @@ jobs:
                 cp lib/libSDL2.so ../artifacts/x64/SDL2.so
 
             - name: Upload Artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: Natives-Linux(x64)
                 path: ./artifacts
@@ -138,7 +138,7 @@ jobs:
                   cp lib/libSDL2.so /artifacts/arm64/SDL2.so
 
             - name: Upload Artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: Natives-Linux(arm64)
                 path: ./artifacts
