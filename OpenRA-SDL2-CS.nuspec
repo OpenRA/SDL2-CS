@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
     This is a version of SDL2-CS modified and packaged for OpenRA.
-    The package includes the C# wrapper (SDL2-CS) and the native binaries for SDL2 and targets version 2.30.6 of the native project.
+    The package includes the C# wrapper (SDL2-CS) and the native binaries for SDL2 and targets version 2.30.9 of the native project.
     </description>
     <copyright>
     - Copyright (c) 2013-2021 Ethan Lee
