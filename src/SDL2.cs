@@ -806,6 +806,10 @@ namespace SDL2
 		public const string SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE =
 			"SDL_QUIT_ON_LAST_WINDOW_CLOSE";
 
+		/* Only available in 2.24.0 or higher. */
+		public const string SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH =
+			"SDL_MAC_OPENGL_ASYNC_DISPATCH";
+
 		public enum SDL_HintPriority
 		{
 			SDL_HINT_DEFAULT,
