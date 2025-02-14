@@ -3,7 +3,7 @@ name: Build native dependencies (SDL2)
 # Change SDL2 version based on https://github.com/libsdl-org/SDL/releases, but remember to check what SDL2 version SDL2-CS targets.
 # Change Chromium revision numbers based on https://chromium.woolyss.com/download/.
 env:
-    SDL2_VERSION: 2.30.9 # Make sure this matches the version mentioned in the description in the .nuspec file.
+    SDL2_VERSION: 2.32.0 # Make sure this matches the version mentioned in the description in the .nuspec file.
     CHROMIUM_BUILD_x86: 1136315
     CHROMIUM_BUILD_x64: 1136314
 
