@@ -33,7 +33,7 @@ jobs:
         needs: [compile-sdl2cs, compile-natives]
         steps:
             - name: Clone repository
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Prepare environment variables
               run: |
