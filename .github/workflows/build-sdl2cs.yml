@@ -16,11 +16,11 @@ jobs:
             - name: Clone Repository
               uses: actions/checkout@v6
 
-            # Since SDL2-CS.csproj targets netstandard2.0 we don't need .NET 6, but let's not risk having outdated support for older versions.
-            - name: Install .NET 6
+            # Since SDL2-CS.csproj targets netstandard2.0 we don't need .NET 8, but let's not risk having outdated support for older versions.
+            - name: Install .NET 8
               uses: actions/setup-dotnet@v5
               with:
-                dotnet-version: '6.0.x'
+                dotnet-version: '8.0.x'
 
             - name: Compile
               run: |
