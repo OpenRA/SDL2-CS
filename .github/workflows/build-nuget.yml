@@ -76,7 +76,7 @@ jobs:
                 path: ./native/linux
 
             - name: Setup NuGet.exe
-              uses: NuGet/setup-nuget@v2
+              uses: NuGet/setup-nuget@v3
 
             - name: Package NuGet
               run: |
