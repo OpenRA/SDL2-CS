@@ -5,6 +5,7 @@ name: Build native dependencies (SDL2)
 env:
     SDL2_VERSION: 2.32.10 # Make sure this matches the version mentioned in the description in the .nuspec file.
     CHROMIUM_BUILD_x64: 1136314
+    CHROMIUM_BUILD_arm64: 1313033
 
 on:
     pull_request:
@@ -50,6 +51,44 @@ jobs:
               uses: actions/upload-artifact@v7
               with:
                 name: Natives-Windows
+                path: ./artifacts
+
+    windows-arm64:
+        name: Windows (arm64)
+        runs-on: windows-11-arm
+        steps:
+            - name: Setup Dependencies
+              shell: pwsh
+              run: |
+                New-Item -ItemType Directory -Force -Path artifacts/arm64 | Out-Null
+
+            - name: Build SDL2 (arm64)
+              shell: pwsh
+              run: |
+                $sdlZip = "SDL2-${env:SDL2_VERSION}.zip"
+                $sdlUrl = "https://github.com/libsdl-org/SDL/releases/download/release-${env:SDL2_VERSION}/$sdlZip"
+
+                Invoke-WebRequest -Uri $sdlUrl -OutFile $sdlZip
+                Expand-Archive -Path $sdlZip -DestinationPath .
+                $sdlRoot = "SDL2-${env:SDL2_VERSION}"
+
+                cmake -S $sdlRoot -B build-arm64 -A ARM64 -DCMAKE_BUILD_TYPE=Release -DSDL_SHARED=ON -DSDL_STATIC=OFF
+                cmake --build build-arm64 --config Release
+
+                Copy-Item "build-arm64/Release/SDL2.dll" "artifacts/arm64/SDL2.dll" -Force
+
+            - name: Download ANGLE
+              shell: pwsh
+              run: |
+                Invoke-WebRequest -Uri "https://storage.googleapis.com/chromium-browser-snapshots/Win_Arm64/${env:CHROMIUM_BUILD_arm64}/chrome-win.zip" -OutFile "chrome-win-arm64.zip"
+                Expand-Archive -Path "chrome-win-arm64.zip" -DestinationPath "chrome-win-arm64"
+                Copy-Item "chrome-win-arm64/chrome-win/libEGL.dll" "artifacts/arm64/libEGL.dll" -Force
+                Copy-Item "chrome-win-arm64/chrome-win/libGLESv2.dll" "artifacts/arm64/libGLESv2.dll" -Force
+
+            - name: Upload Artifacts
+              uses: actions/upload-artifact@v7
+              with:
+                name: Natives-Windows(arm64)
                 path: ./artifacts
 
     macos:
