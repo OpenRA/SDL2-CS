@@ -4,7 +4,6 @@ name: Build native dependencies (SDL2)
 # Change Chromium revision numbers based on https://chromium.woolyss.com/download/.
 env:
     SDL2_VERSION: 2.32.10 # Make sure this matches the version mentioned in the description in the .nuspec file.
-    CHROMIUM_BUILD_x86: 1136315
     CHROMIUM_BUILD_x64: 1136314
 
 on:
@@ -17,19 +16,17 @@ permissions:
 
 jobs:
     windows:
-        name: Windows (x86 + x64)
+        name: Windows (x64)
         runs-on: windows-2022
         steps:
             - name: Setup Dependencies
               shell: pwsh
               run: |
-                New-Item -ItemType Directory -Force -Path artifacts/x86 | Out-Null
                 New-Item -ItemType Directory -Force -Path artifacts/x64 | Out-Null
 
-            - name: Build SDL2 (x86 + x64)
+            - name: Build SDL2 (x64)
               shell: pwsh
               run: |
-
                 $sdlZip = "SDL2-${env:SDL2_VERSION}.zip"
                 $sdlUrl = "https://github.com/libsdl-org/SDL/releases/download/release-${env:SDL2_VERSION}/$sdlZip"
 
@@ -37,12 +34,6 @@ jobs:
                 Expand-Archive -Path $sdlZip -DestinationPath .
                 $sdlRoot = "SDL2-${env:SDL2_VERSION}"
 
-                # Build x86
-                cmake -S $sdlRoot -B build-x86 -A Win32 -DCMAKE_BUILD_TYPE=Release -DSDL_SHARED=ON -DSDL_STATIC=OFF
-                cmake --build build-x86 --config Release
-                Copy-Item "build-x86/Release/SDL2.dll" "artifacts/x86/SDL2.dll" -Force
-
-                # Build x64
                 cmake -S $sdlRoot -B build-x64 -A x64 -DCMAKE_BUILD_TYPE=Release -DSDL_SHARED=ON -DSDL_STATIC=OFF
                 cmake --build build-x64 --config Release
                 Copy-Item "build-x64/Release/SDL2.dll" "artifacts/x64/SDL2.dll" -Force
@@ -50,14 +41,6 @@ jobs:
             - name: Download ANGLE
               shell: pwsh
               run: |
-
-                # x86 ANGLE
-                Invoke-WebRequest -Uri "https://storage.googleapis.com/chromium-browser-snapshots/Win/${env:CHROMIUM_BUILD_x86}/chrome-win.zip" -OutFile "chrome-win-x86.zip"
-                Expand-Archive -Path "chrome-win-x86.zip" -DestinationPath "chrome-win-x86"
-                Copy-Item "chrome-win-x86/chrome-win/libEGL.dll" "artifacts/x86/libEGL.dll" -Force
-                Copy-Item "chrome-win-x86/chrome-win/libGLESv2.dll" "artifacts/x86/libGLESv2.dll" -Force
-
-                # x64 ANGLE
                 Invoke-WebRequest -Uri "https://storage.googleapis.com/chromium-browser-snapshots/Win_x64/${env:CHROMIUM_BUILD_x64}/chrome-win.zip" -OutFile "chrome-win-x64.zip"
                 Expand-Archive -Path "chrome-win-x64.zip" -DestinationPath "chrome-win-x64"
                 Copy-Item "chrome-win-x64/chrome-win/libEGL.dll" "artifacts/x64/libEGL.dll" -Force
