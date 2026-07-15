@@ -18,27 +18,50 @@ permissions:
 jobs:
     windows:
         name: Windows (x86 + x64)
-        runs-on: ubuntu-22.04
+        runs-on: windows-2022
         steps:
             - name: Setup Dependencies
+              shell: pwsh
               run: |
-                mkdir -p artifacts/x86
-                mkdir artifacts/x64
+                New-Item -ItemType Directory -Force -Path artifacts/x86 | Out-Null
+                New-Item -ItemType Directory -Force -Path artifacts/x64 | Out-Null
 
-            # Download an official precompiled release version of SDL because compiling for Windows on Linux is hard.
-            # Download also a precompiled version of Chromium in order to extract libEGL.dll and libGLESv2.dll, which the Windows SDL DLL depends on.
-            - name: Download Natives
+            - name: Build SDL2 (x86 + x64)
+              shell: pwsh
               run: |
-                curl -s -L -O https://www.libsdl.org/release/SDL2-${SDL2_VERSION}-win32-x86.zip
-                unzip SDL2-${SDL2_VERSION}-win32-x86.zip SDL2.dll -d artifacts/x86
-                curl -s -L -O https://storage.googleapis.com/chromium-browser-snapshots/Win/${CHROMIUM_BUILD_x86}/chrome-win.zip
-                unzip -j chrome-win.zip chrome-win/libEGL.dll -d artifacts/x86
-                unzip -j chrome-win.zip chrome-win/libGLESv2.dll -d artifacts/x86
-                curl -s -L -O https://www.libsdl.org/release/SDL2-${SDL2_VERSION}-win32-x64.zip
-                unzip SDL2-${SDL2_VERSION}-win32-x64.zip SDL2.dll -d artifacts/x64
-                curl -s -L -O https://storage.googleapis.com/chromium-browser-snapshots/Win_x64/${CHROMIUM_BUILD_x64}/chrome-win.zip
-                unzip -j chrome-win.zip chrome-win/libEGL.dll -d artifacts/x64
-                unzip -j chrome-win.zip chrome-win/libGLESv2.dll -d artifacts/x64
+
+                $sdlZip = "SDL2-${env:SDL2_VERSION}.zip"
+                $sdlUrl = "https://github.com/libsdl-org/SDL/releases/download/release-${env:SDL2_VERSION}/$sdlZip"
+
+                Invoke-WebRequest -Uri $sdlUrl -OutFile $sdlZip
+                Expand-Archive -Path $sdlZip -DestinationPath .
+                $sdlRoot = "SDL2-${env:SDL2_VERSION}"
+
+                # Build x86
+                cmake -S $sdlRoot -B build-x86 -A Win32 -DCMAKE_BUILD_TYPE=Release -DSDL_SHARED=ON -DSDL_STATIC=OFF
+                cmake --build build-x86 --config Release
+                Copy-Item "build-x86/Release/SDL2.dll" "artifacts/x86/SDL2.dll" -Force
+
+                # Build x64
+                cmake -S $sdlRoot -B build-x64 -A x64 -DCMAKE_BUILD_TYPE=Release -DSDL_SHARED=ON -DSDL_STATIC=OFF
+                cmake --build build-x64 --config Release
+                Copy-Item "build-x64/Release/SDL2.dll" "artifacts/x64/SDL2.dll" -Force
+
+            - name: Download ANGLE
+              shell: pwsh
+              run: |
+
+                # x86 ANGLE
+                Invoke-WebRequest -Uri "https://storage.googleapis.com/chromium-browser-snapshots/Win/${env:CHROMIUM_BUILD_x86}/chrome-win.zip" -OutFile "chrome-win-x86.zip"
+                Expand-Archive -Path "chrome-win-x86.zip" -DestinationPath "chrome-win-x86"
+                Copy-Item "chrome-win-x86/chrome-win/libEGL.dll" "artifacts/x86/libEGL.dll" -Force
+                Copy-Item "chrome-win-x86/chrome-win/libGLESv2.dll" "artifacts/x86/libGLESv2.dll" -Force
+
+                # x64 ANGLE
+                Invoke-WebRequest -Uri "https://storage.googleapis.com/chromium-browser-snapshots/Win_x64/${env:CHROMIUM_BUILD_x64}/chrome-win.zip" -OutFile "chrome-win-x64.zip"
+                Expand-Archive -Path "chrome-win-x64.zip" -DestinationPath "chrome-win-x64"
+                Copy-Item "chrome-win-x64/chrome-win/libEGL.dll" "artifacts/x64/libEGL.dll" -Force
+                Copy-Item "chrome-win-x64/chrome-win/libGLESv2.dll" "artifacts/x64/libGLESv2.dll" -Force
 
             - name: Upload Artifacts
               uses: actions/upload-artifact@v7
