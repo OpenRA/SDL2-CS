@@ -16,6 +16,21 @@
       <Link>libGLESv2.dll</Link>
       <Visible>false</Visible>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)\..\native\win-arm64\SDL2.dll" Condition="'$(TargetPlatform)' == 'win-arm64'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>SDL2.dll</Link>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)\..\native\win-arm64\libEGL.dll" Condition="'$(TargetPlatform)' == 'win-arm64'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>libEGL.dll</Link>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)\..\native\win-arm64\libGLESv2.dll" Condition="'$(TargetPlatform)' == 'win-arm64'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>libGLESv2.dll</Link>
+      <Visible>false</Visible>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)\..\native\linux-x64\SDL2.so" Condition="'$(TargetPlatform)' == 'linux-x64'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>SDL2.so</Link>
@@ -36,7 +51,7 @@
       <Link>SDL2.dylib</Link>
       <Visible>false</Visible>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)\..\lib\netstandard2.0\SDL2-CS.dll.config" Condition="'$(TargetPlatform)' != 'win-x64'">
+    <Content Include="$(MSBuildThisFileDirectory)\..\lib\netstandard2.0\SDL2-CS.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-arm64'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>SDL2-CS.dll.config</Link>
       <Visible>false</Visible>
